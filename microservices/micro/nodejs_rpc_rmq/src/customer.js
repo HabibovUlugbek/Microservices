@@ -1,11 +1,31 @@
 const express = require("express");
+const { RPCObserver, RPCRequest } = require("./rpc");
 const PORT = 9000;
 
 const app = express();
 app.use(express.json());
 
-app.get("/profile", (req, res) => {
-  return res.json("Customer Service");
+const fakeCustomerResponse = {
+  _id: "yt686tu8763tyyr98734",
+  name: "Mike",
+  country: "Poland",
+};
+
+RPCObserver("CUSTOMER_RPC", fakeCustomerResponse);
+
+app.get("/wishlist", async (req, res) => {
+  const requestPayload = {
+    productId: "123",
+    customerId: "yt686tu8763tyyr98734",
+  };
+  try {
+    const responseData = await RPCRequest("PRODUCT_RPC", requestPayload);
+    console.log(responseData);
+    return res.status(200).json(responseData);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
 });
 
 app.get("/", (req, res) => {
@@ -13,6 +33,6 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Customer is runmning on ${PORT} port`);
+  console.log(`Customer is Running on ${PORT}`);
   console.clear();
 });
