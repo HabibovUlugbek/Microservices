@@ -20,19 +20,19 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Test Customer Service
-        working-directory: ./customer
+        working-directory: ./microservices/customer
         run: |
           npm ci
           npm test
 
       - name: Test Products Service
-        working-directory: ./products
+        working-directory: ./microservices/products
         run: |
           npm ci
           npm test
 
       - name: Test Shopping Service
-        working-directory: ./shopping
+        working-directory: ./microservices/shopping
         run: |
           npm ci
           npm test
